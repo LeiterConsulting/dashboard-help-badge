@@ -10,6 +10,9 @@ All notable changes to this project are documented here.
 - Retained the source-qualified `setToken.click` action required by Splunk Enterprise 10.4.0's configured event router.
 - Added keyboard, reduced-motion, theme, contrast, token-safety, and iframe-overflow safeguards.
 - Added original app artwork, Splunkbase-ready media, public repository policies, CI, and release checks.
+- Replaced the repository hero artwork with a real screenshot of the working tutorial.
+- Added modern-navigation color metadata, standard/retina light/dark app icon assets, and a served-static fallback for Splunk 10.4.
+- Added matching `.spl` and macOS-clean `.tar.gz` release packages.
 - Verified the package with Splunk AppInspect and Splunk Enterprise 10.4.0.
 
 ## 0.4.0 — 2026-08-28

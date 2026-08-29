@@ -31,7 +31,9 @@ jobs:
       - name: Upload installable package
         uses: actions/upload-artifact@v4
         with:
-          name: dashboard-help-badge-spl
-          path: dist/*.spl
+          name: dashboard-help-badge-packages
+          path: |
+            dist/*.spl
+            dist/*.tar.gz
           if-no-files-found: error
           retention-days: 14

@@ -15,7 +15,7 @@ import {
     writeFileSync,
 } from 'node:fs';
 import chalk from 'chalk';
-import { create as createTar } from 'tar';
+import { create as createTar, list as listTar } from 'tar';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -303,12 +303,62 @@ function stageConfFiles(projectRoot, stageAppDir, vizs) {
 // Archive
 // ---------------------------------------------------------------------------
 
-async function createSplArchive(stageDir, appId, distDir, filename) {
-    console.log(colors.info('Creating .spl archive...'));
+function portableArchivePath(path) {
+    const segments = path.split('/').filter(Boolean);
+    return segments.every(
+        (segment) =>
+            segment !== '__MACOSX' &&
+            segment !== '.DS_Store' &&
+            !segment.startsWith('._') &&
+            !segment.startsWith('.')
+    );
+}
+
+async function validatePortableArchive(archivePath, appId) {
+    let entryCount = 0;
+    await listTar({
+        file: archivePath,
+        onReadEntry: (entry) => {
+            entryCount += 1;
+            const segments = entry.path.split('/').filter(Boolean);
+            if (
+                segments.length === 0 ||
+                segments[0] !== appId ||
+                segments.includes('..') ||
+                !portableArchivePath(entry.path)
+            ) {
+                throw new Error(`Non-portable archive entry: ${entry.path}`);
+            }
+            if (entry.type === 'SymbolicLink' || entry.type === 'Link') {
+                throw new Error(`Archive links are not permitted: ${entry.path}`);
+            }
+        },
+    });
+    if (entryCount === 0) {
+        throw new Error('Release archive is empty');
+    }
+}
+
+async function createReleaseArchives(stageDir, appId, distDir, baseFilename) {
+    console.log(colors.info('Creating portable .spl and .tar.gz archives...'));
     mkdirSync(distDir, { recursive: true });
-    const outputPath = join(distDir, filename);
-    await createTar({ gzip: true, file: outputPath, cwd: stageDir, filter: (p) => !p.startsWith('.') }, [appId]);
-    return outputPath;
+    const splPath = join(distDir, `${baseFilename}.spl`);
+    const tarGzPath = join(distDir, `${baseFilename}.tar.gz`);
+    await createTar(
+        {
+            cwd: stageDir,
+            file: splPath,
+            filter: portableArchivePath,
+            gzip: true,
+            noMtime: true,
+            portable: true,
+        },
+        [appId]
+    );
+    await validatePortableArchive(splPath, appId);
+    copyFileSync(splPath, tarGzPath);
+    await validatePortableArchive(tarGzPath, appId);
+    return { splPath, tarGzPath };
 }
 
 // ---------------------------------------------------------------------------
@@ -353,6 +403,7 @@ function sourceFingerprint(projectRoot) {
 function getSourceRevision(projectRoot) {
     try {
         return execSync('git rev-parse HEAD', {
+            cwd: projectRoot,
             stdio: ['ignore', 'pipe', 'ignore'],
         })
             .toString()
@@ -365,6 +416,26 @@ function getSourceRevision(projectRoot) {
         );
         return sourceFingerprint(projectRoot);
     }
+}
+
+function getBuildNumber(projectRoot, fullHash) {
+    try {
+        const commitTimestamp = Number.parseInt(
+            execSync('git show -s --format=%ct HEAD', {
+                cwd: projectRoot,
+                stdio: ['ignore', 'pipe', 'ignore'],
+            })
+                .toString()
+                .trim(),
+            10
+        );
+        if (Number.isSafeInteger(commitTimestamp) && commitTimestamp > 0 && commitTimestamp <= 2_147_483_647) {
+            return commitTimestamp;
+        }
+    } catch {
+        // Fall through to a deterministic, positive 28-bit source value.
+    }
+    return Number.parseInt(fullHash.substring(0, 7), 16) + 1;
 }
 
 // ---------------------------------------------------------------------------
@@ -396,7 +467,7 @@ async function main({ cwd }) {
 
     const fullHash = getSourceRevision(projectRoot);
     const shortHash = fullHash.substring(0, 7);
-    const buildNumber = Number.parseInt(fullHash.substring(0, 8), 16);
+    const buildNumber = getBuildNumber(projectRoot, fullHash);
 
     // Parse app.conf to get appId before staging so we can compute stageAppDir
     const appConfPath = getAppConfPath(projectRoot);
@@ -445,11 +516,17 @@ async function main({ cwd }) {
     console.log(colors.info('Generating app manifest...'));
     writeFileSync(join(stageAppDir, 'app.manifest'), JSON.stringify(generateAppManifest(appInfoParsed), null, 2));
 
-    const splatFilename = `${appId}-${appVersion}-${shortHash}.spl`;
-    const outputPath = await createSplArchive(stageDir, appId, distDir, splatFilename);
+    const baseFilename = `${appId}-${appVersion}-${shortHash}`;
+    const { splPath, tarGzPath } = await createReleaseArchives(
+        stageDir,
+        appId,
+        distDir,
+        baseFilename
+    );
 
     console.log(colors.success('Successfully created Splunk app package!'));
-    console.log(colors.dim(`Output: ${outputPath}`));
+    console.log(colors.dim(`Splunk package: ${splPath}`));
+    console.log(colors.dim(`Release tarball: ${tarGzPath}`));
     console.log(colors.dim(`Staging directory: ${stageAppDir}`));
 }
 

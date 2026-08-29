@@ -25,14 +25,14 @@ The app adds four visualization types and requires no SPL, index, input, custom 
 
 ## Install and try it
 
-1. Install the `.spl` archive from `dist/` through **Apps > Manage Apps > Install app from file**.
+1. Install the `.spl` or `.tar.gz` archive from `dist/` through **Apps > Manage Apps > Install app from file**.
 2. Open **Dashboard Help Badge — Interactive Tutorial** from the app launcher and try the finished interaction.
 3. Choose **Actions → Clone dashboard**, then edit the clone and follow the **2 · Build it** tab. The reference pair remains available as an answer key.
 4. Use **3 · Source map** for code review or bulk authoring. Open **Dashboard Help Badge — Dark Theme** to verify theme behavior.
 
 No Splunk restart is expected for the initial install. If an older copy with a different visualization contract is cached, restart Splunk before diagnosing the updated configuration.
 
-For source-based testing, clone the public repository, run `npm ci && npm run verify`, and install the resulting `dist/*.spl` archive. CI also publishes each verified archive as a short-lived workflow artifact.
+For source-based testing, clone the public repository, run `npm ci && npm run verify`, and install the resulting `dist/*.spl` or `dist/*.tar.gz` archive. CI also publishes both verified formats as a short-lived workflow artifact.
 
 ## Placement patterns
 
@@ -116,7 +116,7 @@ npm install
 npm run verify
 ```
 
-`npm run verify` type-checks, runs the option/security unit tests, creates production bundles, and writes a self-contained `.spl` archive to `dist/`.
+`npm run verify` type-checks, runs the option/security unit tests, creates production bundles, and writes identical self-contained `.spl` and `.tar.gz` archives to `dist/`. The packager excludes macOS metadata, dotfiles, links, and paths outside the single app root.
 
 Useful individual commands:
 

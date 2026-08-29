@@ -1,4 +1,4 @@
-<nav search_view="search">
+<nav search_view="search" color="#006D9C">
   <view name="dashboard_help_badge_demo" default="true" />
   <view name="dashboard_help_badge_dark_demo" />
 </nav>

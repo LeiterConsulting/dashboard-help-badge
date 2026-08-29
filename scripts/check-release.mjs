@@ -47,8 +47,20 @@ if (packageJson.license !== 'MIT' || packageJson.private !== true) {
 }
 
 requireDimensions('package/app/static/appIcon.png', 36, 36);
+requireDimensions('package/app/static/appIcon_2x.png', 72, 72);
+requireDimensions('package/app/static/appIconAlt.png', 36, 36);
+requireDimensions('package/app/static/appIconAlt_2x.png', 72, 72);
+requireDimensions('package/app/appserver/static/appIcon.png', 36, 36);
+requireDimensions('package/app/appserver/static/appIcon_2x.png', 72, 72);
+requireDimensions('package/app/appserver/static/appIconAlt.png', 36, 36);
+requireDimensions('package/app/appserver/static/appIconAlt_2x.png', 72, 72);
 requireDimensions('package/app/static/screenshot.png', 623, 350);
 requireDimensions('assets/brand/social-preview.png', 1280, 640);
+
+const navigation = readText('package/app/default/data/ui/nav/default.xml');
+if (!/<nav\b[^>]*\bcolor="#[0-9A-Fa-f]{6}"/.test(navigation)) {
+    fail('Modern navigation must declare the app icon background color');
+}
 
 const visualizationRoot = join(projectRoot, 'visualizations');
 const visualizationNames = readdirSync(visualizationRoot, { withFileTypes: true })
