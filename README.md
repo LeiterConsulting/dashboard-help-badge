@@ -131,7 +131,7 @@ The packager includes the interactive tutorial, advanced source map, dark verifi
 
 ## Release readiness
 
-Version 0.5.0 is structured as a public testing candidate for Splunkbase/AppInspect submission. Before publishing a release:
+Version 0.5.1 is structured as a public testing candidate for Splunkbase/AppInspect submission. Before publishing a release:
 
 1. update the version in both `package.json` and `package/app/app.conf`;
 2. run `npm run verify` from a clean checkout;

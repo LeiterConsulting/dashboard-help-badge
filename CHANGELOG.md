@@ -2,6 +2,13 @@
 
 All notable changes to this project are documented here.
 
+## 0.5.1 — 2026-08-29
+
+- Replaced fallback page monograms with documented Splunk 10.4 modern-navigation icons.
+- Added a notebook icon for the interactive tutorial and a monitor icon for the dark-theme verification dashboard.
+- Added release and live-install checks that prevent icon-bearing links from regressing to monogram-only view entries.
+- Verified both page icons visually and through the live navigation object on Splunk Enterprise 10.4.0.
+
 ## 0.5.0 — 2026-08-29
 
 - Promoted the token-controlled Help Trigger + Help Panel pair as the recommended pattern.
