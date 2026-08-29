@@ -29,7 +29,7 @@ jobs:
         run: npm run verify
 
       - name: Upload installable package
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: dashboard-help-badge-spl
           path: dist/*.spl
