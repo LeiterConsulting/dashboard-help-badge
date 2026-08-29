@@ -1,0 +1,99 @@
+{
+  "title": "Help Badge Winner Pattern",
+  "description": "A zero-search, token-controlled contextual-help pair.",
+  "inputs": {},
+  "defaults": {
+    "dataSources": {},
+    "tokens": {
+      "default": {
+        "help_availability": { "value": "closed" }
+      }
+    }
+  },
+  "expressions": {
+    "conditions": {
+      "condition_help_availability_open": {
+        "name": "Show availability help",
+        "value": "$help_availability$ = \"open\""
+      }
+    }
+  },
+  "visualizations": {
+    "viz_explained_tile": {
+      "type": "splunk.markdown",
+      "options": {
+        "markdown": "### Service availability\n\n# 99.94%\n\nTrailing 30 days"
+      }
+    },
+    "viz_help_trigger": {
+      "type": "dashboard_help_badge.help_trigger",
+      "options": {
+        "accessibleLabel": "Toggle service availability help",
+        "tokenName": "help_availability",
+        "openValue": "open",
+        "closedValue": "closed",
+        "accentColor": "#006d9c"
+      },
+      "eventHandlers": [
+        {
+          "type": "drilldown.setToken",
+          "options": {
+            "tokens": [
+              { "token": "help_availability", "key": "value" }
+            ]
+          }
+        }
+      ]
+    },
+    "viz_help_panel": {
+      "type": "dashboard_help_badge.help_panel",
+      "containerOptions": {
+        "visibility": {
+          "showConditions": ["condition_help_availability_open"]
+        }
+      },
+      "options": {
+        "accessibleLabel": "Service availability contextual help",
+        "heading": "Availability definition",
+        "helpText": "Successful requests divided by all eligible requests over the trailing 30 days. Planned maintenance is excluded.",
+        "tokenName": "help_availability",
+        "closedValue": "closed",
+        "accentColor": "#006d9c",
+        "allowClose": true
+      },
+      "eventHandlers": [
+        {
+          "type": "drilldown.setToken",
+          "options": {
+            "tokens": [
+              { "token": "help_availability", "key": "value" }
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "layout": {
+    "tabs": {
+      "items": [
+        { "label": "Example", "layoutId": "layout_1" }
+      ]
+    },
+    "layoutDefinitions": {
+      "layout_1": {
+        "type": "absolute",
+        "options": {
+          "display": "auto",
+          "width": 900,
+          "height": 320,
+          "backgroundColor": "#f4f5f6"
+        },
+        "structure": [
+          { "item": "viz_explained_tile", "type": "block", "position": { "x": 20, "y": 20, "w": 700, "h": 240 } },
+          { "item": "viz_help_panel", "type": "block", "position": { "x": 310, "y": 85, "w": 350, "h": 150 } },
+          { "item": "viz_help_trigger", "type": "block", "position": { "x": 650, "y": 40, "w": 50, "h": 50 } }
+        ]
+      }
+    }
+  }
+}

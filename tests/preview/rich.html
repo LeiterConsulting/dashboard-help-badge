@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+  <head><meta charset="utf-8" /><title>Rich tooltip preview</title></head>
+  <body>
+    <div id="root"></div>
+    <script>
+      const previewTheme = new URLSearchParams(location.search).get('theme') === 'dark' ? 'dark' : 'light';
+      const listener = (state) => (callback, options) => {
+        if (options?.invokeImmediately) callback(state);
+        return () => {};
+      };
+      window.DashboardExtensionAPI = {
+        addOptionsListener: listener({ options: {
+          accessibleLabel: 'Explain checkout latency',
+          heading: 'How to read this tile',
+          helpText: 'For $audience$: p95 duration of completed checkout requests. Investigate when the value exceeds 350 ms for two windows.',
+          anchor: 'top-left',
+          accentColor: '#006d9c',
+          iconSize: 28,
+          allowPin: true,
+          showOnHover: true
+        }}),
+        addTokensListener: listener({ tokens: { audience: 'operators' } }),
+        addThemeListener: listener({ theme: previewTheme }),
+        addModeListener: listener({ mode: 'view' }),
+        addDataSourcesListener: listener({ dataSources: {}, loading: false }),
+        addDimensionsListener: listener({ width: 430, height: 160 }),
+        addDrilldownListener: () => {}, addErrorListener: listener({ error: '' }),
+        getDataSources: () => ({ dataSources: {}, loading: false }),
+        getOptions: () => ({ options: {} }), getDimensions: () => ({ width: 430, height: 160 }),
+        getMode: () => ({ mode: 'view' }), getTheme: () => ({ theme: previewTheme }),
+        getTokens: () => ({ tokens: {} }), getError: () => ({ error: '' }),
+        setOptions: () => {}, triggerDrilldown: () => {}, setError: () => {}, clearError: () => {}
+      };
+    </script>
+    <script type="module" src="../../dist/help_tooltip/visualization.js"></script>
+  </body>
+</html>

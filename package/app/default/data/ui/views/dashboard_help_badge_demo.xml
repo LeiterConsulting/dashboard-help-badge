@@ -1,0 +1,337 @@
+<dashboard version="2" theme="light">
+  <label>Dashboard Help Badge — Interactive Tutorial</label>
+  <description>Clone, edit, inspect, and build the token-controlled contextual-help pattern in Dashboard Studio.</description>
+  <definition><![CDATA[
+{
+  "title": "Dashboard Help Badge — Interactive Tutorial",
+  "description": "A guided, zero-search authoring lab for the token-controlled Help Badge pattern in Splunk 10.4 Dashboard Studio.",
+  "inputs": {
+    "input_audience": {
+      "type": "input.dropdown",
+      "title": "Viewer role",
+      "options": {
+        "token": "audience",
+        "defaultValue": "operators",
+        "items": [
+          { "label": "Operators", "value": "operators" },
+          { "label": "Managers", "value": "managers" },
+          { "label": "Developers", "value": "developers" }
+        ]
+      }
+    }
+  },
+  "defaults": {
+    "dataSources": {},
+    "tokens": {
+      "default": {
+        "help_finished": { "value": "closed" },
+        "help_reference": { "value": "closed" }
+      }
+    },
+    "visualizations": {
+      "global": {
+        "showProgressBar": false,
+        "showLastUpdated": false
+      }
+    }
+  },
+  "expressions": {
+    "conditions": {
+      "condition_help_finished_open": {
+        "name": "Show finished-example help",
+        "value": "$help_finished$ = \"open\""
+      },
+      "condition_help_reference_open": {
+        "name": "Show tutorial-reference help",
+        "value": "$help_reference$ = \"open\""
+      }
+    }
+  },
+  "visualizations": {
+    "viz_start_intro": {
+      "type": "splunk.markdown",
+      "options": {
+        "markdown": "## Build your first Dashboard Help Badge\n\nThis is a working tutorial, not only a showcase. First try the finished interaction below. Then open **2 · Build it** for the exact editor workflow and **3 · Source map** for the generated JSON. No SPL or data source is involved."
+      }
+    },
+    "viz_clone_safety": {
+      "type": "splunk.markdown",
+      "options": {
+        "markdown": "### Practice safely: clone first\n\nFrom view mode choose **Actions → Clone dashboard**. Give the copy a new title and ID, then click **Edit** on that clone. Splunk uses the same permission for editing and saving, so there is no supported edit-but-never-save mode. Cloning keeps this installed answer key pristine.\n\nTo abandon an experiment, choose **View** and discard changes instead of Save."
+      }
+    },
+    "viz_finished_tile": {
+      "type": "splunk.markdown",
+      "options": {
+        "markdown": "### Finished example — Checkout API latency\n\n# 286 ms\n\n▲ 18% from the prior 15-minute window\n\nClick anywhere in the orange 50 × 50 target. The card is a separate element and exists only while its token is open."
+      }
+    },
+    "viz_finished_trigger": {
+      "type": "dashboard_help_badge.help_trigger",
+      "options": {
+        "accessibleLabel": "Toggle checkout latency help",
+        "tokenName": "help_finished",
+        "openValue": "open",
+        "closedValue": "closed",
+        "accentColor": "#c85a14",
+        "iconGlyph": "info",
+        "iconSize": 28
+      },
+      "eventHandlers": [
+        {
+          "type": "drilldown.setToken",
+          "options": {
+            "tokens": [
+              { "token": "help_finished", "key": "value" }
+            ]
+          }
+        }
+      ]
+    },
+    "viz_finished_panel": {
+      "type": "dashboard_help_badge.help_panel",
+      "containerOptions": {
+        "visibility": {
+          "showConditions": ["condition_help_finished_open"]
+        }
+      },
+      "options": {
+        "accessibleLabel": "Checkout latency contextual help",
+        "heading": "How to read checkout latency",
+        "helpText": "For $audience$: this is the p95 duration of completed checkout requests in the current 15-minute window. Investigate above 350 ms for two consecutive windows.",
+        "tokenName": "help_finished",
+        "closedValue": "closed",
+        "accentColor": "#c85a14",
+        "allowClose": true
+      },
+      "eventHandlers": [
+        {
+          "type": "drilldown.setToken",
+          "options": {
+            "tokens": [
+              { "token": "help_finished", "key": "value" }
+            ]
+          }
+        }
+      ]
+    },
+    "viz_start_anatomy": {
+      "type": "splunk.markdown",
+      "options": {
+        "markdown": "### The three moving parts\n\n| Part | What it does | Closed footprint |\n|---|---|---:|\n| **Trigger (1 of 2)** | Writes `open` or `closed` to a dashboard token | 50 × 50 |\n| **Panel (2 of 2)** | Displays the configured heading and safe plain text | None |\n| **Visibility condition** | Materializes the panel only when the token is `open` | None |\n\nBoth custom elements use the same token name. The panel’s × writes the closed value back to that token."
+      }
+    },
+    "viz_start_editor_note": {
+      "type": "splunk.markdown",
+      "options": {
+        "markdown": "### What Edit mode teaches you\n\nDashboard Studio deliberately displays conditionally hidden panels while editing, so you can select and configure them. In View mode, the finished panel disappears completely when closed.\n\nAfter cloning, inspect this finished trigger and panel in Edit mode before building your own pair. Their configuration sidebars are the answer key."
+      }
+    },
+    "viz_lab_intro": {
+      "type": "splunk.markdown",
+      "options": {
+        "markdown": "## Guided build lab\n\nClone this dashboard, click **Edit**, return to this tab, and build in the practice tile on the right. The reference pair on the left is fully wired: select either element to compare its sidebar with each step."
+      }
+    },
+    "viz_reference_tile": {
+      "type": "splunk.markdown",
+      "options": {
+        "markdown": "### REFERENCE — already wired\n\n# 99.94%\n\nService availability · trailing 30 days\n\nIn Edit mode select the green trigger, then the conditional card, to inspect their Content, Token pairing, Interactions, Visibility, Position and size, and Source code sections."
+      }
+    },
+    "viz_reference_trigger": {
+      "type": "dashboard_help_badge.help_trigger",
+      "options": {
+        "accessibleLabel": "Toggle reference availability help",
+        "tokenName": "help_reference",
+        "openValue": "open",
+        "closedValue": "closed",
+        "accentColor": "#147d64",
+        "iconGlyph": "question",
+        "iconSize": 28
+      },
+      "eventHandlers": [
+        {
+          "type": "drilldown.setToken",
+          "options": {
+            "tokens": [
+              { "token": "help_reference", "key": "value" }
+            ]
+          }
+        }
+      ]
+    },
+    "viz_reference_panel": {
+      "type": "dashboard_help_badge.help_panel",
+      "containerOptions": {
+        "visibility": {
+          "showConditions": ["condition_help_reference_open"]
+        }
+      },
+      "options": {
+        "accessibleLabel": "Service availability contextual help",
+        "heading": "Availability definition",
+        "helpText": "Successful requests divided by all eligible requests over the trailing 30 days. Planned maintenance is excluded.",
+        "tokenName": "help_reference",
+        "closedValue": "closed",
+        "accentColor": "#147d64",
+        "allowClose": true
+      },
+      "eventHandlers": [
+        {
+          "type": "drilldown.setToken",
+          "options": {
+            "tokens": [
+              { "token": "help_reference", "key": "value" }
+            ]
+          }
+        }
+      ]
+    },
+    "viz_practice_tile": {
+      "type": "splunk.markdown",
+      "options": {
+        "markdown": "### YOUR PRACTICE TILE — add the pair here\n\n# 42 orders/min\n\nOrder throughput · current 15-minute window\n\nUse token name **`help_practice`**. Place your new 50 × 50 trigger at this tile’s upper-right and your panel inside this tile. In View mode, only your trigger should remain while closed."
+      }
+    },
+    "viz_step_trigger": {
+      "type": "splunk.markdown",
+      "options": {
+        "markdown": "### Step 1 — Add and configure the trigger\n\n1. Choose **Add chart → Help Trigger** (element 1 of 2).\n2. Drag it to the practice tile; set **Position and size** to `50 × 50`.\n3. Under **Content**, enter an accessible label such as `Toggle order throughput help`.\n4. Under **Token pairing**, set token `help_practice`, open value `open`, closed value `closed`.\n5. Pick the symbol, shape, color, and icon size under **Appearance**."
+      }
+    },
+    "viz_step_trigger_interaction": {
+      "type": "splunk.markdown",
+      "options": {
+        "markdown": "### Step 2 — Wire the trigger interaction\n\n1. With the trigger selected, open **Interactions → Add interaction**.\n2. Set **On click** to **Set tokens**.\n3. Token name: `help_practice`.\n4. For Token value choose **Use predefined token**, then select `value`.\n5. Turn on **Default value** and enter `closed`; choose **Apply**.\n\nThis one dialog both wires the click and creates the token’s closed default—no source editing required."
+      }
+    },
+    "viz_step_panel": {
+      "type": "splunk.markdown",
+      "options": {
+        "markdown": "### Step 3 — Add and configure the panel\n\n1. Choose **Add chart → Help Panel** (element 2 of 2).\n2. Place it where the open card should appear; start near `360 × 150`.\n3. Configure its accessible label, heading, help text, close button, and accent color.\n4. Under **Token pairing**, use token `help_practice` and closed value `closed`.\n5. Under **Interactions**, repeat Step 2: Set tokens → `help_practice` → predefined `value` → default `closed`."
+      }
+    },
+    "viz_step_visibility": {
+      "type": "splunk.markdown",
+      "options": {
+        "markdown": "### Step 4 — Make the panel conditional\n\n1. Select the panel and open **Visibility → Set up condition**.\n2. Choose **Create condition**; name it `Show practice help`.\n3. Build: left `$help_practice$`, operator `=`, right `open`.\n4. Choose **Apply and close**, select the new condition, and keep **Show when condition is met**.\n5. Choose **View** to preview. Click the full trigger tile, ×, the trigger again, and Escape.\n\nIf the panel remains as a large box while closed, its show condition is missing or attached in Hide mode."
+      }
+    },
+    "viz_lab_verify": {
+      "type": "splunk.markdown",
+      "options": {
+        "markdown": "### Completion checklist\n\n- [ ] Closed View mode contains only a compact 50 × 50 trigger.\n- [ ] Clicking beside the glyph still opens the panel.\n- [ ] Trigger, panel, interaction, and condition all use exactly `help_practice`.\n- [ ] Trigger click, ×, and Escape all close and reopen correctly.\n- [ ] Enter/Space works with keyboard focus.\n- [ ] Light/dark theme switching does not leave a mismatched white or dark square.\n- [ ] The help text explains definition, time window, and viewer action."
+      }
+    },
+    "viz_source_intro": {
+      "type": "splunk.markdown",
+      "options": {
+        "markdown": "## Advanced source map\n\nThe visual editor creates the following structures. You do not need to paste these for the guided workflow, but this map makes reviews, automation, and bulk authoring much easier. Search the dashboard source for the four highlighted areas."
+      }
+    },
+    "viz_source_token_condition": {
+      "type": "splunk.markdown",
+      "options": {
+        "markdown": "### 1 — Default token and condition\n\n```json\n\"defaults\": {\n  \"tokens\": {\n    \"default\": {\n      \"help_practice\": { \"value\": \"closed\" }\n    }\n  }\n}\n```\n\n```json\n\"condition_help_practice_open\": {\n  \"name\": \"Show practice help\",\n  \"value\": \"$help_practice$ = \\\"open\\\"\"\n}\n```"
+      }
+    },
+    "viz_source_trigger": {
+      "type": "splunk.markdown",
+      "options": {
+        "markdown": "### 2 — Trigger anatomy\n\n```json\n{\n  \"type\": \"dashboard_help_badge.help_trigger\",\n  \"options\": {\n    \"accessibleLabel\": \"Toggle order throughput help\",\n    \"tokenName\": \"help_practice\",\n    \"openValue\": \"open\",\n    \"closedValue\": \"closed\",\n    \"accentColor\": \"#006d9c\"\n  },\n  \"eventHandlers\": [{\n    \"type\": \"drilldown.setToken\",\n    \"options\": { \"tokens\": [{\n      \"token\": \"help_practice\", \"key\": \"value\"\n    }] }\n  }]\n}\n```"
+      }
+    },
+    "viz_source_panel": {
+      "type": "splunk.markdown",
+      "options": {
+        "markdown": "### 3 — Panel anatomy\n\n```json\n{\n  \"type\": \"dashboard_help_badge.help_panel\",\n  \"containerOptions\": {\n    \"visibility\": {\n      \"showConditions\": [\"condition_help_practice_open\"]\n    }\n  },\n  \"options\": {\n    \"heading\": \"Order throughput definition\",\n    \"helpText\": \"Completed orders per minute...\",\n    \"tokenName\": \"help_practice\",\n    \"closedValue\": \"closed\",\n    \"allowClose\": true\n  },\n  \"eventHandlers\": [{\n    \"type\": \"drilldown.setToken\",\n    \"options\": { \"tokens\": [{\n      \"token\": \"help_practice\", \"key\": \"value\"\n    }] }\n  }]\n}\n```"
+      }
+    },
+    "viz_source_layout": {
+      "type": "splunk.markdown",
+      "options": {
+        "markdown": "### 4 — Layout positions\n\n```json\n{\n  \"item\": \"viz_help_panel\",\n  \"type\": \"block\",\n  \"position\": { \"x\": 300, \"y\": 80, \"w\": 360, \"h\": 150 }\n},\n{\n  \"item\": \"viz_help_trigger\",\n  \"type\": \"block\",\n  \"position\": { \"x\": 650, \"y\": 30, \"w\": 50, \"h\": 50 }\n}\n```\n\nPlace the panel before the trigger in the layout structure so the trigger remains the top layer when their bounds approach one another. Give every pair a unique token and condition ID."
+      }
+    },
+    "viz_source_reuse": {
+      "type": "splunk.markdown",
+      "options": {
+        "markdown": "### Faster reuse\n\nWithin a cloned dashboard, hold Command/Control and select both Help Badge elements, then use Command/Control+C and Command/Control+V. Rename the duplicated pair’s token in both Token pairing sections and both interactions, then create a new visibility condition.\n\nCopying the whole pair preserves its content and appearance; unique tokens prevent one icon from opening multiple panels."
+      }
+    }
+  },
+  "layout": {
+    "globalInputs": ["input_audience"],
+    "tabs": {
+      "items": [
+        { "label": "1 · Start here", "layoutId": "layout_1" },
+        { "label": "2 · Build it", "layoutId": "layout_2" },
+        { "label": "3 · Source map", "layoutId": "layout_3" }
+      ]
+    },
+    "layoutDefinitions": {
+      "layout_1": {
+        "type": "absolute",
+        "options": {
+          "display": "auto",
+          "width": 1440,
+          "height": 860,
+          "backgroundColor": "#f4f5f6"
+        },
+        "structure": [
+          { "item": "viz_start_intro", "type": "block", "position": { "x": 20, "y": 20, "w": 1400, "h": 105 } },
+          { "item": "viz_clone_safety", "type": "block", "position": { "x": 950, "y": 145, "w": 470, "h": 275 } },
+          { "item": "viz_finished_tile", "type": "block", "position": { "x": 20, "y": 145, "w": 900, "h": 275 } },
+          { "item": "viz_finished_panel", "type": "block", "position": { "x": 490, "y": 210, "w": 370, "h": 165 } },
+          { "item": "viz_finished_trigger", "type": "block", "position": { "x": 850, "y": 165, "w": 50, "h": 50 } },
+          { "item": "viz_start_anatomy", "type": "block", "position": { "x": 20, "y": 450, "w": 900, "h": 330 } },
+          { "item": "viz_start_editor_note", "type": "block", "position": { "x": 950, "y": 450, "w": 470, "h": 330 } }
+        ]
+      },
+      "layout_2": {
+        "type": "absolute",
+        "options": {
+          "display": "auto",
+          "width": 1440,
+          "height": 1250,
+          "backgroundColor": "#f4f5f6"
+        },
+        "structure": [
+          { "item": "viz_lab_intro", "type": "block", "position": { "x": 20, "y": 20, "w": 1400, "h": 105 } },
+          { "item": "viz_reference_tile", "type": "block", "position": { "x": 20, "y": 145, "w": 680, "h": 270 } },
+          { "item": "viz_reference_panel", "type": "block", "position": { "x": 300, "y": 210, "w": 330, "h": 155 } },
+          { "item": "viz_reference_trigger", "type": "block", "position": { "x": 630, "y": 165, "w": 50, "h": 50 } },
+          { "item": "viz_practice_tile", "type": "block", "position": { "x": 740, "y": 145, "w": 680, "h": 270 } },
+          { "item": "viz_step_trigger", "type": "block", "position": { "x": 20, "y": 445, "w": 680, "h": 230 } },
+          { "item": "viz_step_trigger_interaction", "type": "block", "position": { "x": 740, "y": 445, "w": 680, "h": 230 } },
+          { "item": "viz_step_panel", "type": "block", "position": { "x": 20, "y": 705, "w": 680, "h": 245 } },
+          { "item": "viz_step_visibility", "type": "block", "position": { "x": 740, "y": 705, "w": 680, "h": 245 } },
+          { "item": "viz_lab_verify", "type": "block", "position": { "x": 20, "y": 980, "w": 1400, "h": 225 } }
+        ]
+      },
+      "layout_3": {
+        "type": "absolute",
+        "options": {
+          "display": "auto",
+          "width": 1440,
+          "height": 1100,
+          "backgroundColor": "#f4f5f6"
+        },
+        "structure": [
+          { "item": "viz_source_intro", "type": "block", "position": { "x": 20, "y": 20, "w": 1400, "h": 105 } },
+          { "item": "viz_source_token_condition", "type": "block", "position": { "x": 20, "y": 145, "w": 680, "h": 390 } },
+          { "item": "viz_source_trigger", "type": "block", "position": { "x": 740, "y": 145, "w": 680, "h": 390 } },
+          { "item": "viz_source_panel", "type": "block", "position": { "x": 20, "y": 565, "w": 680, "h": 450 } },
+          { "item": "viz_source_layout", "type": "block", "position": { "x": 740, "y": 565, "w": 680, "h": 300 } },
+          { "item": "viz_source_reuse", "type": "block", "position": { "x": 740, "y": 895, "w": 680, "h": 120 } }
+        ]
+      }
+    },
+    "options": {
+      "showTitleAndDescription": false
+    }
+  }
+}
+  ]]></definition>
+</dashboard>

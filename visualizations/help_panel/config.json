@@ -1,0 +1,74 @@
+{
+  "showTitleAndDescription": false,
+  "includeInToolbar": true,
+  "includeInVizSwitcher": false,
+  "showDrilldown": true,
+  "canSetTokens": ["dynamic", "static"],
+  "hasEventHandlers": true,
+  "config": {
+    "name": "Help Panel",
+    "description": "Step 2: conditional styled panel paired with a Help Trigger token",
+    "category": "Custom",
+    "icon": null,
+    "dataContract": {
+      "requiredDataSources": [],
+      "optionalDataSources": []
+    },
+    "size": {
+      "initialWidth": 400,
+      "initialHeight": 160
+    },
+    "optionsSchema": {
+      "accessibleLabel": { "type": "string", "default": "Contextual help" },
+      "heading": { "type": "string", "default": "About this tile" },
+      "helpText": {
+        "type": "string",
+        "default": "Explain what this tile shows, how it is calculated, and what the viewer should do next."
+      },
+      "showHeading": { "type": "boolean", "default": true },
+      "allowClose": { "type": "boolean", "default": true },
+      "tokenName": { "type": "string", "default": "help_popover" },
+      "closedValue": { "type": "string", "default": "closed" },
+      "accentColor": { "type": "string", "default": "#006d9c" }
+    },
+    "editorConfig": [
+      {
+        "label": "Content",
+        "layout": [
+          [
+            { "label": "Accessible label", "editor": "editor.text", "option": "accessibleLabel" }
+          ],
+          [
+            { "label": "Heading", "editor": "editor.text", "option": "heading" }
+          ],
+          [
+            { "label": "Help text", "editor": "editor.text", "option": "helpText" }
+          ],
+          [
+            { "label": "Show heading", "editor": "editor.checkbox", "option": "showHeading" },
+            { "label": "Show close button", "editor": "editor.checkbox", "option": "allowClose" }
+          ]
+        ]
+      },
+      {
+        "label": "Token pairing",
+        "layout": [
+          [
+            { "label": "Token name", "editor": "editor.text", "option": "tokenName" }
+          ],
+          [
+            { "label": "Closed value", "editor": "editor.text", "option": "closedValue" }
+          ]
+        ]
+      },
+      {
+        "label": "Appearance",
+        "layout": [
+          [
+            { "label": "Accent color", "editor": "editor.color", "option": "accentColor" }
+          ]
+        ]
+      }
+    ]
+  }
+}

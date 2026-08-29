@@ -1,0 +1,53 @@
+name: Bug report
+description: Report a reproducible Dashboard Help Badge problem
+title: "[Bug]: "
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: Do not include credentials, private dashboard content, or security vulnerabilities. Use the Security tab for private vulnerability reports.
+  - type: input
+    id: app-version
+    attributes:
+      label: App version
+      placeholder: 0.5.0
+    validations:
+      required: true
+  - type: input
+    id: splunk-version
+    attributes:
+      label: Splunk version
+      placeholder: 10.4.0
+    validations:
+      required: true
+  - type: dropdown
+    id: visualization
+    attributes:
+      label: Visualization
+      options:
+        - Help Trigger
+        - Help Panel
+        - Help Tooltip
+        - Help Badge (Compact)
+        - Tutorial or packaging
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproduction steps
+      description: Include theme, browser, configuration, and the smallest safe dashboard-source excerpt that reproduces the problem.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+    validations:
+      required: true

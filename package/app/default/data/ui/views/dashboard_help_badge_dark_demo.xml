@@ -1,0 +1,130 @@
+<dashboard version="2" theme="dark">
+  <label>Dashboard Help Badge — Dark Theme</label>
+  <description>Dark-theme verification for the token-controlled contextual-help pattern.</description>
+  <definition><![CDATA[
+{
+  "title": "Dashboard Help Badge — Dark Theme",
+  "description": "The compact trigger and companion panel follow Dashboard Studio's SDK theme state.",
+  "inputs": {},
+  "defaults": {
+    "dataSources": {},
+    "tokens": {
+      "default": {
+        "help_dark_latency": { "value": "closed" }
+      }
+    },
+    "visualizations": {
+      "global": {
+        "showProgressBar": false,
+        "showLastUpdated": false
+      }
+    }
+  },
+  "expressions": {
+    "conditions": {
+      "condition_help_dark_latency_open": {
+        "name": "Show dark-theme latency help",
+        "value": "$help_dark_latency$ = \"open\""
+      }
+    }
+  },
+  "visualizations": {
+    "viz_intro": {
+      "type": "splunk.markdown",
+      "options": {
+        "markdown": "## Dark-theme verification\n\nThe compact iframe surface follows the dark dashboard canvas instead of appearing as a white square. The entire 50 × 50 area around the icon remains the activation surface."
+      }
+    },
+    "viz_tile": {
+      "type": "splunk.markdown",
+      "options": {
+        "markdown": "### Checkout API latency\n\n# 286 ms\n\n▲ 18% from the prior 15-minute window\n\nClick anywhere in the compact target at the upper-right."
+      }
+    },
+    "viz_trigger": {
+      "type": "dashboard_help_badge.help_trigger",
+      "options": {
+        "accessibleLabel": "Toggle checkout latency help",
+        "tokenName": "help_dark_latency",
+        "openValue": "open",
+        "closedValue": "closed",
+        "accentColor": "#53a9d1",
+        "iconGlyph": "info",
+        "iconSize": 28
+      },
+      "eventHandlers": [
+        {
+          "type": "drilldown.setToken",
+          "options": {
+            "tokens": [
+              { "token": "help_dark_latency", "key": "value" }
+            ]
+          }
+        }
+      ]
+    },
+    "viz_panel": {
+      "type": "dashboard_help_badge.help_panel",
+      "containerOptions": {
+        "visibility": {
+          "showConditions": ["condition_help_dark_latency_open"]
+        }
+      },
+      "options": {
+        "accessibleLabel": "Checkout latency contextual help",
+        "heading": "How to read checkout latency",
+        "helpText": "This is the p95 duration of completed checkout requests in the current 15-minute window. Investigate above 350 ms for two consecutive windows.",
+        "tokenName": "help_dark_latency",
+        "closedValue": "closed",
+        "accentColor": "#53a9d1",
+        "allowClose": true
+      },
+      "eventHandlers": [
+        {
+          "type": "drilldown.setToken",
+          "options": {
+            "tokens": [
+              { "token": "help_dark_latency", "key": "value" }
+            ]
+          }
+        }
+      ]
+    },
+    "viz_notes": {
+      "type": "splunk.markdown",
+      "options": {
+        "markdown": "### Theme contract\n\nThe SDK theme listener selects a dark canvas, card, border, text, muted-control, and focus palette. The configured accent color remains author-controlled, and the glyph automatically switches between black and white for contrast."
+      }
+    }
+  },
+  "layout": {
+    "tabs": {
+      "items": [
+        { "label": "Dark verification", "layoutId": "layout_1" }
+      ]
+    },
+    "layoutDefinitions": {
+      "layout_1": {
+        "type": "absolute",
+        "options": {
+          "display": "auto",
+          "width": 1200,
+          "height": 620,
+          "backgroundColor": "#171d21"
+        },
+        "structure": [
+          { "item": "viz_intro", "type": "block", "position": { "x": 20, "y": 20, "w": 1160, "h": 110 } },
+          { "item": "viz_tile", "type": "block", "position": { "x": 20, "y": 150, "w": 760, "h": 300 } },
+          { "item": "viz_panel", "type": "block", "position": { "x": 380, "y": 225, "w": 340, "h": 160 } },
+          { "item": "viz_trigger", "type": "block", "position": { "x": 710, "y": 170, "w": 50, "h": 50 } },
+          { "item": "viz_notes", "type": "block", "position": { "x": 810, "y": 150, "w": 370, "h": 300 } }
+        ]
+      }
+    },
+    "options": {
+      "showTitleAndDescription": false
+    }
+  }
+}
+  ]]></definition>
+</dashboard>

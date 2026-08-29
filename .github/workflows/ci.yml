@@ -1,0 +1,37 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+
+      - name: Use Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install locked dependencies
+        run: npm ci
+
+      - name: Verify, build, scan, and package
+        run: npm run verify
+
+      - name: Upload installable package
+        uses: actions/upload-artifact@v4
+        with:
+          name: dashboard-help-badge-spl
+          path: dist/*.spl
+          if-no-files-found: error
+          retention-days: 14

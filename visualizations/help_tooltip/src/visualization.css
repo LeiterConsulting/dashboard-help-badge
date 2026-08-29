@@ -1,0 +1,212 @@
+html {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    overflow: hidden;
+}
+
+body {
+    width: 100vw;
+    max-width: 100vw;
+    height: 100vh;
+    max-height: 100vh;
+    margin: 0;
+    overflow: hidden;
+}
+
+#root {
+    width: 100% !important;
+    height: 100% !important;
+    min-width: 0;
+    min-height: 0;
+    margin: 0;
+    overflow: hidden;
+}
+
+.help-tooltip {
+    --help-accent: #006d9c;
+    --help-accent-text: #ffffff;
+    --help-icon-size: 26px;
+    --help-card-background: #ffffff;
+    --help-card-border: #b8c1ca;
+    --help-card-text: #1d2a33;
+    --help-card-muted: #5c6773;
+    --help-focus-ring: #005ea8;
+
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    position: relative;
+    color: var(--help-card-text);
+    font-family:
+        'Splunk Platform Sans', 'Proxima Nova', Roboto, 'Helvetica Neue', Helvetica, Arial,
+        sans-serif;
+}
+
+.help-tooltip[data-theme='dark'] {
+    --help-card-background: #24272d;
+    --help-card-border: #65717c;
+    --help-card-text: #f1f3f5;
+    --help-card-muted: #c3cbd4;
+    --help-focus-ring: #8ecdf7;
+}
+
+.help-tooltip[data-mode='edit'] {
+    outline: 1px dashed color-mix(in srgb, var(--help-accent) 55%, transparent);
+    outline-offset: -1px;
+}
+
+.help-tooltip__badge {
+    appearance: none;
+    align-items: center;
+    background: var(--help-accent);
+    border: 1px solid color-mix(in srgb, var(--help-accent) 74%, #000000);
+    box-sizing: border-box;
+    color: var(--help-accent-text);
+    cursor: help;
+    display: flex;
+    font: inherit;
+    height: var(--help-icon-size);
+    justify-content: center;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    width: var(--help-icon-size);
+    z-index: 2;
+}
+
+.help-tooltip[data-icon-style='circle'] .help-tooltip__badge {
+    border-radius: 50%;
+}
+
+.help-tooltip[data-icon-style='rounded-square'] .help-tooltip__badge {
+    border-radius: 6px;
+}
+
+.help-tooltip__badge:hover {
+    filter: brightness(1.08);
+}
+
+.help-tooltip__badge:focus-visible {
+    outline: 3px solid var(--help-focus-ring);
+    outline-offset: 2px;
+}
+
+.help-tooltip__glyph {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: calc(var(--help-icon-size) * 0.67);
+    font-weight: 700;
+    line-height: 1;
+    transform: translateY(-0.02em);
+}
+
+.help-tooltip__card {
+    background: var(--help-card-background);
+    border: 1px solid var(--help-card-border);
+    border-radius: 8px;
+    box-shadow: 0 5px 16px rgb(0 0 0 / 24%);
+    box-sizing: border-box;
+    color: var(--help-card-text);
+    max-height: calc(100% - 8px);
+    opacity: 0;
+    overflow: auto;
+    padding: 12px 14px;
+    pointer-events: none;
+    position: absolute;
+    transform: translateY(-2px) scale(0.985);
+    transform-origin: top center;
+    transition:
+        opacity 120ms ease,
+        transform 120ms ease,
+        visibility 120ms step-end;
+    visibility: hidden;
+    z-index: 1;
+}
+
+.help-tooltip--open .help-tooltip__card {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0) scale(1);
+    transition:
+        opacity 120ms ease,
+        transform 120ms ease,
+        visibility 0ms step-start;
+    visibility: visible;
+}
+
+.help-tooltip[data-anchor='top-left'] .help-tooltip__badge {
+    left: 4px;
+    top: 4px;
+}
+
+.help-tooltip[data-anchor='top-left'] .help-tooltip__card {
+    left: calc(var(--help-icon-size) + 12px);
+    right: 4px;
+    top: 4px;
+    transform-origin: top left;
+}
+
+.help-tooltip[data-anchor='top-right'] .help-tooltip__badge {
+    right: 4px;
+    top: 4px;
+}
+
+.help-tooltip[data-anchor='top-right'] .help-tooltip__card {
+    left: 4px;
+    right: calc(var(--help-icon-size) + 12px);
+    top: 4px;
+    transform-origin: top right;
+}
+
+.help-tooltip[data-anchor='bottom-left'] .help-tooltip__badge {
+    bottom: 4px;
+    left: 4px;
+}
+
+.help-tooltip[data-anchor='bottom-left'] .help-tooltip__card {
+    bottom: 4px;
+    left: calc(var(--help-icon-size) + 12px);
+    right: 4px;
+    transform-origin: bottom left;
+}
+
+.help-tooltip[data-anchor='bottom-right'] .help-tooltip__badge {
+    bottom: 4px;
+    right: 4px;
+}
+
+.help-tooltip[data-anchor='bottom-right'] .help-tooltip__card {
+    bottom: 4px;
+    left: 4px;
+    right: calc(var(--help-icon-size) + 12px);
+    transform-origin: bottom right;
+}
+
+.help-tooltip__heading {
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1.3;
+    margin: 0 0 6px;
+}
+
+.help-tooltip__body {
+    font-size: 13px;
+    line-height: 1.45;
+    overflow-wrap: anywhere;
+    white-space: pre-line;
+}
+
+.help-tooltip__pin-hint {
+    border-top: 1px solid var(--help-card-border);
+    color: var(--help-card-muted);
+    font-size: 11px;
+    line-height: 1.35;
+    margin-top: 9px;
+    padding-top: 7px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .help-tooltip__card {
+        transition: none;
+    }
+}

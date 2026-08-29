@@ -1,0 +1,115 @@
+html {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    overflow: hidden;
+}
+
+body {
+    width: 100vw;
+    max-width: 100vw;
+    height: 100vh;
+    max-height: 100vh;
+    margin: 0;
+    overflow: hidden;
+}
+
+#root {
+    width: 100% !important;
+    height: 100% !important;
+    min-width: 0;
+    min-height: 0;
+    margin: 0;
+    overflow: hidden;
+}
+
+.help-panel {
+    --help-accent: #006d9c;
+    --help-background: #ffffff;
+    --help-border: #b8c1ca;
+    --help-text: #1d2a33;
+    --help-muted: #5c6773;
+    --help-focus-ring: #005ea8;
+
+    background: var(--help-background);
+    border: 1px solid var(--help-border);
+    border-radius: 10px;
+    box-shadow: 0 8px 24px rgb(0 0 0 / 22%);
+    box-sizing: border-box;
+    color: var(--help-text);
+    display: grid;
+    font-family:
+        'Splunk Platform Sans', 'Proxima Nova', Roboto, 'Helvetica Neue', Helvetica, Arial,
+        sans-serif;
+    grid-template-columns: 5px 1fr auto;
+    height: calc(100% - 8px);
+    margin: 4px;
+    overflow: hidden;
+    position: relative;
+    width: calc(100% - 8px);
+}
+
+.help-panel[data-theme='dark'] {
+    --help-background: #24272d;
+    --help-border: #65717c;
+    --help-text: #f1f3f5;
+    --help-muted: #c3cbd4;
+    --help-focus-ring: #8ecdf7;
+}
+
+.help-panel[data-mode='edit'] {
+    outline: 1px dashed color-mix(in srgb, var(--help-accent) 55%, transparent);
+    outline-offset: -2px;
+}
+
+.help-panel__accent {
+    background: var(--help-accent);
+}
+
+.help-panel__content {
+    min-width: 0;
+    overflow: auto;
+    padding: 14px 12px 14px 16px;
+}
+
+.help-panel__heading {
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 1.3;
+    margin: 0 0 7px;
+}
+
+.help-panel__body {
+    font-size: 13px;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+    white-space: pre-line;
+}
+
+.help-panel__close {
+    appearance: none;
+    align-items: center;
+    align-self: start;
+    background: transparent;
+    border: 0;
+    border-radius: 50%;
+    color: var(--help-muted);
+    cursor: pointer;
+    display: flex;
+    font: 24px/1 Arial, sans-serif;
+    height: 32px;
+    justify-content: center;
+    margin: 8px 8px 0 0;
+    padding: 0;
+    width: 32px;
+}
+
+.help-panel__close:hover {
+    background: color-mix(in srgb, var(--help-text) 9%, transparent);
+    color: var(--help-text);
+}
+
+.help-panel__close:focus-visible {
+    outline: 3px solid var(--help-focus-ring);
+    outline-offset: 1px;
+}

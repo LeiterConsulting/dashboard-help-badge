@@ -1,0 +1,84 @@
+{
+  "showTitleAndDescription": false,
+  "includeInToolbar": true,
+  "includeInVizSwitcher": false,
+  "showDrilldown": false,
+  "canSetTokens": [],
+  "hasEventHandlers": false,
+  "config": {
+    "name": "Help Badge (Compact)",
+    "description": "A 50-pixel information badge using a native browser tooltip",
+    "category": "Custom",
+    "icon": null,
+    "dataContract": {
+      "requiredDataSources": [],
+      "optionalDataSources": []
+    },
+    "size": {
+      "initialWidth": 50,
+      "initialHeight": 50
+    },
+    "optionsSchema": {
+      "accessibleLabel": { "type": "string", "default": "More information" },
+      "heading": { "type": "string", "default": "About this tile" },
+      "helpText": {
+        "type": "string",
+        "default": "Explain what this tile shows, how it is calculated, and what the viewer should do next."
+      },
+      "iconGlyph": { "type": "string", "default": "info" },
+      "iconStyle": { "type": "string", "default": "circle" },
+      "iconSize": { "type": "number", "default": 26 },
+      "accentColor": { "type": "string", "default": "#006d9c" }
+    },
+    "editorConfig": [
+      {
+        "label": "Content",
+        "layout": [
+          [
+            { "label": "Accessible label", "editor": "editor.text", "option": "accessibleLabel" }
+          ],
+          [
+            { "label": "Heading", "editor": "editor.text", "option": "heading" }
+          ],
+          [
+            { "label": "Help text", "editor": "editor.text", "option": "helpText" }
+          ]
+        ]
+      },
+      {
+        "label": "Appearance",
+        "layout": [
+          [
+            {
+              "label": "Symbol",
+              "editor": "editor.select",
+              "option": "iconGlyph",
+              "editorProps": {
+                "values": [
+                  { "label": "Information", "value": "info" },
+                  { "label": "Question", "value": "question" },
+                  { "label": "Alert", "value": "alert" }
+                ]
+              }
+            },
+            {
+              "label": "Shape",
+              "editor": "editor.select",
+              "option": "iconStyle",
+              "editorProps": {
+                "values": [
+                  { "label": "Circle", "value": "circle" },
+                  { "label": "Rounded square", "value": "rounded-square" }
+                ]
+              }
+            }
+          ],
+          [
+            { "label": "Icon color", "editor": "editor.color", "option": "accentColor" },
+            { "label": "Icon size", "editor": "editor.number", "option": "iconSize" }
+          ]
+        ]
+      }
+    ]
+  }
+}

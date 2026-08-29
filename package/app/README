@@ -1,0 +1,13 @@
+Dashboard Help Badge for Splunk Dashboard Studio
+
+Requires Splunk Enterprise 10.4 or a corresponding Splunk Cloud Platform release.
+This app adds four zero-search custom visualization elements:
+
+* dashboard_help_badge.help_tooltip
+* dashboard_help_badge.help_badge
+* dashboard_help_badge.help_trigger
+* dashboard_help_badge.help_panel
+
+Open Dashboard Help Badge - Interactive Tutorial after installation for a guided, editable authoring lab.
+Clone the tutorial before editing so the installed answer key remains unchanged.
+Use Dashboard Help Badge - Dark Theme to verify the compact trigger and companion panel on a dark canvas.

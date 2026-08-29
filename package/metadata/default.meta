@@ -1,0 +1,12 @@
+[]
+access = read : [ * ], write : [ admin, sc_admin ]
+
+[views/dashboard_help_badge_demo]
+access = read : [ * ], write : [ admin, sc_admin ]
+export = none
+owner = nobody
+
+[views/dashboard_help_badge_dark_demo]
+access = read : [ * ], write : [ admin, sc_admin ]
+export = none
+owner = nobody

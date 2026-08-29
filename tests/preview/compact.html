@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+  <head><meta charset="utf-8" /><title>Compact badge preview</title></head>
+  <body>
+    <div id="root"></div>
+    <script>
+      const previewTheme = new URLSearchParams(location.search).get('theme') === 'dark' ? 'dark' : 'light';
+      const listener = (state) => (callback, options) => {
+        if (options?.invokeImmediately) callback(state);
+        return () => {};
+      };
+      window.DashboardExtensionAPI = {
+        addOptionsListener: listener({ options: {
+          accessibleLabel: 'Compact checkout latency help',
+          heading: 'Checkout API latency',
+          helpText: 'p95 completed-request duration. Warning threshold: 350 ms.',
+          accentColor: '#147d64', iconGlyph: 'question', iconSize: 26
+        }}),
+        addTokensListener: listener({ tokens: {} }),
+        addThemeListener: listener({ theme: previewTheme }),
+        addModeListener: listener({ mode: 'view' }),
+        addDataSourcesListener: listener({ dataSources: {}, loading: false }),
+        addDimensionsListener: listener({ width: 50, height: 50 }),
+        addDrilldownListener: () => {}, addErrorListener: listener({ error: '' }),
+        getDataSources: () => ({ dataSources: {}, loading: false }),
+        getOptions: () => ({ options: {} }), getDimensions: () => ({ width: 50, height: 50 }),
+        getMode: () => ({ mode: 'view' }), getTheme: () => ({ theme: previewTheme }),
+        getTokens: () => ({ tokens: {} }), getError: () => ({ error: '' }),
+        setOptions: () => {}, triggerDrilldown: () => {}, setError: () => {}, clearError: () => {}
+      };
+    </script>
+    <script type="module" src="../../dist/help_badge/visualization.js"></script>
+  </body>
+</html>
