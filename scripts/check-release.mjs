@@ -62,6 +62,53 @@ if (!/<nav\b[^>]*\bcolor="#[0-9A-Fa-f]{6}"/.test(navigation)) {
     fail('Modern navigation must declare the app icon background color');
 }
 
+const supportedNavigationIcons = new Set([
+    'bookmark',
+    'chartgauge',
+    'chartline',
+    'chartpanels',
+    'circlesfour',
+    'cog',
+    'cylinderindex',
+    'filechart',
+    'filemagnifier',
+    'filenode',
+    'forwarderuniversal',
+    'layerstriple',
+    'layoutoverview',
+    'magnifier',
+    'monitor',
+    'organizernotebook',
+    'pulse',
+    'star',
+    'tag',
+]);
+const expectedNavigationLinks = [
+    {
+        href: '/app/dashboard_help_badge/dashboard_help_badge_demo',
+        icon: 'organizernotebook',
+        label: 'Dashboard Help Badge — Interactive Tutorial',
+    },
+    {
+        href: '/app/dashboard_help_badge/dashboard_help_badge_dark_demo',
+        icon: 'monitor',
+        label: 'Dashboard Help Badge — Dark Theme',
+    },
+];
+const navigationLinks = [...navigation.matchAll(
+    /<a\s+href="([^"]+)"\s+icon="([^"]+)">([^<]+)<\/a>/g
+)].map((match) => ({ href: match[1], icon: match[2], label: match[3] }));
+
+if (JSON.stringify(navigationLinks) !== JSON.stringify(expectedNavigationLinks)) {
+    fail('Modern navigation must retain the two semantic icon-bearing dashboard links');
+}
+if (navigationLinks.some(({ icon }) => !supportedNavigationIcons.has(icon))) {
+    fail('Modern navigation uses an icon outside the documented Splunk icon set');
+}
+if (/<view\b/.test(navigation)) {
+    fail('Modern navigation must not use monogram-only view entries');
+}
+
 const visualizationRoot = join(projectRoot, 'visualizations');
 const visualizationNames = readdirSync(visualizationRoot, { withFileTypes: true })
     .filter((entry) => entry.isDirectory())

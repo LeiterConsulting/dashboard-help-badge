@@ -23,6 +23,7 @@
 - Tutorial clone/edit workflow, three tabs, reference pair, and source map.
 - Trigger/panel authoring through the visual editor, including default token creation, interaction, and visibility condition.
 - Installed dashboard ACLs and clone-first recovery guidance.
+- Modern navigation shows the tutorial notebook icon and dark-theme monitor icon instead of fallback letter monograms.
 - Rich: hover, focus, click/tap pin, click unpin, and Escape.
 - Rich: four anchors and minimum/recommended footprints.
 - Compact: native hover tooltip and complete screen-reader label.

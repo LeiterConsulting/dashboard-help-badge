@@ -30,6 +30,10 @@ MAX_PACKAGE_BYTES = 16_777_216
 MAX_RESPONSE_BYTES = 65_536
 SAFE_NAME = re.compile(r"^[a-z][a-z0-9_]{0,99}$")
 REQUIRED_VISUALIZATIONS = ("help_badge", "help_panel", "help_tooltip", "help_trigger")
+EXPECTED_NAVIGATION_ICONS = {
+    "/app/dashboard_help_badge/dashboard_help_badge_demo": "organizernotebook",
+    "/app/dashboard_help_badge/dashboard_help_badge_dark_demo": "monitor",
+}
 
 
 class InstallError(RuntimeError):
@@ -350,6 +354,34 @@ def exact_object_present(
     return isinstance(entries, list) and len(entries) == 1
 
 
+def navigation_icons_present(
+    web_opener,
+    origin: str,
+    authorization_value: str,
+    timeout: int,
+    app_id: str,
+) -> dict[str, bool]:
+    payload = request_json(
+        web_opener,
+        origin,
+        f"/servicesNS/nobody/{app_id}/data/ui/nav/default?output_mode=json",
+        authorization_value,
+        timeout,
+    )
+    navigation = first_entry_content(payload, "navigation_invalid").get("eai:data")
+    if not isinstance(navigation, str):
+        raise InstallError("navigation_invalid")
+    return {
+        icon: bool(
+            re.search(
+                rf'<a\s+href="{re.escape(href)}"\s+icon="{re.escape(icon)}">',
+                navigation,
+            )
+        )
+        for href, icon in EXPECTED_NAVIGATION_ICONS.items()
+    }
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--env-file", type=Path, required=True)
@@ -475,7 +507,18 @@ def main() -> int:
             f"/servicesNS/nobody/{arguments.app_id}/data/ui/views/"
             "dashboard_help_badge_demo?output_mode=json",
         )
-        if not all(visualization_results.values()) or not demo_dashboard_loaded:
+        navigation_icon_results = navigation_icons_present(
+            web_opener,
+            origin,
+            authorization_value,
+            timeout,
+            arguments.app_id,
+        )
+        if (
+            not all(visualization_results.values())
+            or not demo_dashboard_loaded
+            or not all(navigation_icon_results.values())
+        ):
             raise InstallError("runtime_objects_missing")
 
         result.update(
@@ -490,6 +533,7 @@ def main() -> int:
                 "tls_verification": tls_verification,
                 "visualizations": visualization_results,
                 "demo_dashboard_loaded": demo_dashboard_loaded,
+                "navigation_icons": navigation_icon_results,
                 "status": "pass",
             }
         )

@@ -34,6 +34,7 @@ The app uses the supported Dashboard Studio extension framework and remains a sm
 
 - `static/appIcon.png` is an exact 36 × 36 PNG.
 - `static/screenshot.png` is an exact 623 × 350 PNG.
+- Modern navigation uses documented icon-bearing `<a>` entries: `organizernotebook` identifies the interactive tutorial and `monitor` identifies the dark-theme verification dashboard. Plain `<view>` entries are intentionally avoided because Splunk 10.4 renders them with first-letter monograms when no default icon is available.
 - The package contains one root directory and no `local` directory, credentials, source maps, build environment, or generated report.
 - Project source is MIT licensed; bundled third-party terms are disclosed separately.
 - Privacy, security, support, contribution, changelog, listing copy, and reproducible CI material are included.
@@ -51,4 +52,6 @@ Splunk Enterprise 10.4.0 GA requires the source-qualified action name `setToken.
 - [Dashboard extension CLI](https://help.splunk.com/en/splunk-enterprise/developing-views-and-apps-for-splunk-web/10.4/custom-visualizations-for-dashboard-studio/create-custom-visualizations-for-dashboard-studio-with-the-splunk-dashboard-extension-cli)
 - [Splunk UI accessibility: color](https://splunkui.splunk.com/DesignSystem/Accessibility/Color)
 - [Splunk UI accessibility: data visualizations](https://splunkui.splunk.com/DesignSystem/Accessibility/DataViz)
+- [Modern navigation UI changes](https://help.splunk.com/en/splunk-enterprise/release-notes-and-updates/release-notes/10.4/modern-navigation-ui-changes)
+- [Navigation XML reference](https://dev.splunk.com/enterprise/reference/dashboardnav)
 - [Splunkbase file standards](https://dev.splunk.com/enterprise/docs/releaseapps/splunkbase/approvalcriteria)

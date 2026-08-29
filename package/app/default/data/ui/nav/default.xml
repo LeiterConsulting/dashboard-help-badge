@@ -1,4 +1,4 @@
 <nav search_view="search" color="#006D9C">
-  <view name="dashboard_help_badge_demo" default="true" />
-  <view name="dashboard_help_badge_dark_demo" />
+  <a href="/app/dashboard_help_badge/dashboard_help_badge_demo" icon="organizernotebook">Dashboard Help Badge — Interactive Tutorial</a>
+  <a href="/app/dashboard_help_badge/dashboard_help_badge_dark_demo" icon="monitor">Dashboard Help Badge — Dark Theme</a>
 </nav>
