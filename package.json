@@ -32,7 +32,7 @@
 	"devDependencies": {
 		"@splunk/dashboard-studio-extension": "^1.0.0",
 		"@types/node": "^22.20.1",
-		"chalk": "^5.3.0",
+		"chalk": "^6.0.0",
 		"esbuild": "^0.28.2",
 		"tar": "^7.4.3",
 		"tsx": "^4.23.12",
