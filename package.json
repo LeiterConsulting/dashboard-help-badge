@@ -30,7 +30,7 @@
 		"verify": "npm run typecheck && npm test && npm run check:release && npm run scan:public && npm run build:prod && npm run package"
 	},
 	"devDependencies": {
-		"@splunk/dashboard-studio-extension": "^1.0.0",
+		"@splunk/dashboard-studio-extension": "^1.0.1",
 		"@types/node": "^22.20.1",
 		"chalk": "^5.3.0",
 		"esbuild": "^0.28.2",
